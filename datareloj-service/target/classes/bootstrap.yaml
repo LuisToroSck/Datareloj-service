@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: datareloj-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+  datasource:
+    url: jdbc:mysql://localhost:3307/mueblesstgo_db
+    username: root
+    password: LuchoSick17
+  jpa:
+    hibernate:
+      ddl-auto: update
