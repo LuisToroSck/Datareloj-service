@@ -41,9 +41,9 @@ public class DatarelojController {
     }
 
     @PostMapping("/calcularHorasExtras")
-    public ResponseEntity<String> calcularHorasExtras(){
+    public ResponseEntity<List<AutorizacionModel>> calcularHorasExtras(){
         List<AutorizacionModel> horasExtras = datarelojService.calcularHorasExtras();
-        return ResponseEntity.ok("Se han calculado las horas extras");
+        return ResponseEntity.ok(horasExtras);
     }
 
     @GetMapping("/cargarReloj")
