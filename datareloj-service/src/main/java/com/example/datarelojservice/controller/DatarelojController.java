@@ -46,6 +46,12 @@ public class DatarelojController {
         return ResponseEntity.ok(horasExtras);
     }
 
+    @PostMapping("/calcularInasistencias")
+    public ResponseEntity<List<JustificativoModel>> calcularInasistencias(){
+        List<JustificativoModel> inasistencias = datarelojService.calcularInasistencias();
+        return ResponseEntity.ok(inasistencias);
+    }
+
     @GetMapping("/cargarReloj")
     public String cargarReloj(RedirectAttributes ms) throws FileNotFoundException{
         // FALTAN MÉTODOS 

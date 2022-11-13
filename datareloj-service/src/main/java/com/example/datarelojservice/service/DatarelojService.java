@@ -120,5 +120,12 @@ public class DatarelojService {
         List<AutorizacionModel> autorizaciones = restTemplate.getForObject("http://localhost:8001/autorizacion/calcularHorasExtras",List.class);    
         return autorizaciones;
     }
+
+    public List<JustificativoModel> calcularInasistencias(){
+        List<JustificativoModel> list = new ArrayList<>();
+        HttpEntity<List<JustificativoModel>> request = new HttpEntity<List<JustificativoModel>>(list);
+        List<JustificativoModel> justificativos = restTemplate.getForObject("http://localhost:8004/justificativo/calcularInasistencias",List.class);    
+        return justificativos;
+    }
     
 }
