@@ -71,13 +71,26 @@ public class DatarelojService {
         return dataRelojRepository.findAll();
     }
 
-    public List<Integer> calcularAtrasos(List<DatarelojEntity> marcasReloj, EmpleadoModel empleado){
+    public List<Integer> calcularAtrasos(String rutEmpleado){
+
+        EmpleadoModel[] empleados = getEmpleados();
+        EmpleadoModel empleado = new EmpleadoModel();
+        int i = 0;
+        while(i<empleados.length){
+            if(empleados[i].getRutEmpleado().equals(rutEmpleado)){
+                empleado = empleados[i];
+            }
+            i = i + 1;
+        }
+
+        List<DatarelojEntity> marcasReloj = listarMarcasReloj();
+
         List<Integer> atrasos = new ArrayList<>();
         atrasos.add(0);
         atrasos.add(0);
         atrasos.add(0);
 
-        int i=0;
+        i=0;
         while(i<marcasReloj.size()){
             if(marcasReloj.get(i).getRutEmpleadoReloj().equals(empleado.getRutEmpleado())){
                 if( (marcasReloj.get(i).getHora().getHours() == 8) && (marcasReloj.get(i).getHora().getMinutes() > 10) && (marcasReloj.get(i).getHora().getMinutes() <= 25)){
@@ -128,4 +141,9 @@ public class DatarelojService {
         return justificativos;
     }
     
+    public EmpleadoModel[] getEmpleados(){
+        EmpleadoModel[] empleados = restTemplate.getForObject("http://localhost:8002/empleado", EmpleadoModel[].class);
+        return empleados;
+    }
+
 }

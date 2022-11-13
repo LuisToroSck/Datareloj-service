@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Entity
+@Table(name= "datareloj")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

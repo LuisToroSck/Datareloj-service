@@ -7,6 +7,7 @@ import com.example.datarelojservice.service.DatarelojService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,4 +64,10 @@ public class DatarelojController {
         ms.addFlashAttribute("mensaje","Archivo subido");
         return "redirect:/";
     }
+
+    @GetMapping("/getAtrasos/{rutEmpleado}")
+    public List<Integer> getAtrasos(@PathVariable String rutEmpleado){
+        return datarelojService.calcularAtrasos(rutEmpleado);
+    }
+
 }
