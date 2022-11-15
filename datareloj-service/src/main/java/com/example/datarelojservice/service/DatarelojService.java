@@ -7,16 +7,20 @@ import com.example.datarelojservice.model.EmpleadoModel;
 import com.example.datarelojservice.model.JustificativoModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -27,6 +31,9 @@ public class DatarelojService {
 
     @Autowired
     DatarelojRepository dataRelojRepository;
+
+    @Autowired
+    FileUploadService fileUploadService;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -71,13 +78,13 @@ public class DatarelojService {
         return dataRelojRepository.findAll();
     }
 
-    public List<Integer> calcularAtrasos(String rutEmpleado){
+    public List<Integer> calcularAtrasos(Long id){
 
         EmpleadoModel[] empleados = getEmpleados();
         EmpleadoModel empleado = new EmpleadoModel();
         int i = 0;
         while(i<empleados.length){
-            if(empleados[i].getRutEmpleado().equals(rutEmpleado)){
+            if(empleados[i].getId()==id){
                 empleado = empleados[i];
             }
             i = i + 1;
@@ -144,6 +151,46 @@ public class DatarelojService {
     public EmpleadoModel[] getEmpleados(){
         EmpleadoModel[] empleados = restTemplate.getForObject("http://localhost:8002/empleado", EmpleadoModel[].class);
         return empleados;
+    }
+
+    public void uploadClockFile(String filename) {
+        try {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy/mm/dd");
+            SimpleDateFormat formatoHora = new SimpleDateFormat("hh:mm");
+
+            // Cargar archivo guardado
+            Resource data =  fileUploadService.load(filename);
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(data.getInputStream())
+            );
+
+            // Lectura de archivo
+            String line = reader.readLine();
+            while (line != null) {
+                String[] values = line.split(";");
+                DatarelojEntity marcaReloj = new DatarelojEntity();
+
+                Date fecha = new Date(formatoFecha.parse(values[0]).getTime());
+                marcaReloj.setFecha(fecha);
+                //marcaReloj.setDate(LocalDate.parse(values[0], formatter));
+
+                Time hora = new Time(formatoHora.parse(values[1]).getTime());
+                marcaReloj.setHora(hora);
+                //marcaReloj.setTime(values[1]);
+
+                marcaReloj.setRutEmpleadoReloj(values[2]);
+
+                // Guardar en BD
+                dataRelojRepository.save(marcaReloj);
+
+                // Siguiente linea
+                line = reader.readLine();
+            }
+            // Cerrar archivo
+            reader.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }

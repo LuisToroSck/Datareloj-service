@@ -10,6 +10,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmpleadoModel {
+    private Long id;
     private String rutEmpleado;
     private String apellidos;
     private String nombres;

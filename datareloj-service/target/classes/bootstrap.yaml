@@ -6,7 +6,7 @@ spring:
       enabled: true
       uri: http://localhost:8081
   datasource:
-    url: jdbc:mysql://localhost:3307/mueblesstgo_db
+    url: jdbc:mysql://localhost:3307/datareloj_db
     username: root
     password: LuchoSick17
   jpa:
