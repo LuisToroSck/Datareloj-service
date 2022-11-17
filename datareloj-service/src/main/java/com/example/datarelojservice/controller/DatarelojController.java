@@ -78,6 +78,9 @@ public class DatarelojController {
 
     @PostMapping("/subirArchivo")
     public ResponseEntity<String> uploadClockFile(@RequestParam("file") MultipartFile file) {
+        datarelojService.eliminarAutorizaciones();
+        datarelojService.eliminarJustificativos();
+        datarelojService.eliminarMarcasReloj();
         try {
             String filename = file.getOriginalFilename();
             System.out.println("Nombre de archivo: " + filename);
@@ -85,6 +88,9 @@ public class DatarelojController {
             fileUploadService.save(file);
             // A partir de archivo guardado, leer este y guardar datos en bd
             datarelojService.uploadClockFile(filename);
+            
+            datarelojService.calcularHorasExtras();
+            datarelojService.calcularInasistencias();
 
             return ResponseEntity.ok().body("Archivo subido correctamente");
         } catch (Exception e) {
