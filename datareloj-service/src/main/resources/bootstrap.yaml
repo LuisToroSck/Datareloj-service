@@ -4,9 +4,13 @@ spring:
   cloud:
     config:
       enabled: true
+      fail-fast: true
+      retry:
+        maxAttempts: 200
+        maxInterval: 10000      
       uri: http://localhost:8081
   datasource:
-    url: jdbc:mysql://localhost:3307/datareloj_db
+    url: jdbc:mysql://localhost:3307/justificativo_db
     username: root
     password: LuchoSick17
   jpa:

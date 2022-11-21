@@ -35,7 +35,8 @@ public class DatarelojService {
     @Autowired
     FileUploadService fileUploadService;
 
-    RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    RestTemplate restTemplate;
 
     public DatarelojEntity guardarDataReloj(DatarelojEntity reloj){
         return dataRelojRepository.save(reloj);
@@ -123,33 +124,33 @@ public class DatarelojService {
     public List<JustificativoModel> eliminarJustificativos(){
         List<JustificativoModel> list = new ArrayList<>();
         HttpEntity<List<JustificativoModel>> request = new HttpEntity<List<JustificativoModel>>(list);
-        List<JustificativoModel> justificativos = restTemplate.postForObject("http://localhost:8082/justificativo/eliminar",request,List.class);    
+        List<JustificativoModel> justificativos = restTemplate.postForObject("http://justificativo-service/justificativo/eliminar",request,List.class);    
         return justificativos;
     }
 
     public List<AutorizacionModel> eliminarAutorizaciones(){
         List<AutorizacionModel> list = new ArrayList<>();
         HttpEntity<List<AutorizacionModel>> request = new HttpEntity<List<AutorizacionModel>>(list);
-        List<AutorizacionModel> autorizaciones = restTemplate.postForObject("http://localhost:8082/autorizacion/eliminar",request,List.class);    
+        List<AutorizacionModel> autorizaciones = restTemplate.postForObject("http://autorizacion-service/autorizacion/eliminar",request,List.class);    
         return autorizaciones;
     }
 
     public List<AutorizacionModel> calcularHorasExtras(){
         List<AutorizacionModel> list = new ArrayList<>();
         HttpEntity<List<AutorizacionModel>> request = new HttpEntity<List<AutorizacionModel>>(list);
-        List<AutorizacionModel> autorizaciones = restTemplate.getForObject("http://localhost:8082/autorizacion/calcularHorasExtras",List.class);    
+        List<AutorizacionModel> autorizaciones = restTemplate.getForObject("http://autorizacion-service/autorizacion/calcularHorasExtras",List.class);    
         return autorizaciones;
     }
 
     public List<JustificativoModel> calcularInasistencias(){
         List<JustificativoModel> list = new ArrayList<>();
         HttpEntity<List<JustificativoModel>> request = new HttpEntity<List<JustificativoModel>>(list);
-        List<JustificativoModel> justificativos = restTemplate.getForObject("http://localhost:8082/justificativo/calcularInasistencias",List.class);    
+        List<JustificativoModel> justificativos = restTemplate.getForObject("http://justificativo-service/justificativo/calcularInasistencias",List.class);    
         return justificativos;
     }
     
     public EmpleadoModel[] getEmpleados(){
-        EmpleadoModel[] empleados = restTemplate.getForObject("http://localhost:8082/empleado", EmpleadoModel[].class);
+        EmpleadoModel[] empleados = restTemplate.getForObject("http://empleado-service/empleado", EmpleadoModel[].class);
         return empleados;
     }
 
