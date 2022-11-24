@@ -1,6 +1,7 @@
 com\example\datarelojservice\model\AutorizacionModel.class
 com\example\datarelojservice\entity\DatarelojEntity.class
 com\example\datarelojservice\repository\DatarelojRepository.class
+com\example\datarelojservice\config\RestTemplateConfig.class
 com\example\datarelojservice\service\FileUploadService.class
 com\example\datarelojservice\model\EmpleadoModel.class
 com\example\datarelojservice\DatarelojServiceApplication.class
